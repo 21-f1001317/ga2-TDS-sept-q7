@@ -1,0 +1,32 @@
+name: Cache Example Workflow
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  cache-job:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: prime-cache-09096ea
+      id: cache-step
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.npm
+          node_modules
+        key: cache-09096ea
+
+    - name: Echo cache result
+      run: |
+        echo "Cache hit: ${{ steps.cache-step.outputs.cache-hit }}"
